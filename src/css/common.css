@@ -16,3 +16,55 @@ img {
   display: block;
   max-width: 100%;
 }
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.timer .field {
+  text-align: center;
+  margin: 0 10px;
+}
+
+.timer .field .value {
+  font-size: 40;
+  font-weight: bold;
+  color: black;
+}
+
+.timer .field .label {
+  font-size: 40px;
+  color: black;
+}
+
+input[type='text'] {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.2em;
+  margin-right: 10px;
+  padding: 10px;
+  background-color: transparent;
+}
+
+button {
+  background-color: #fafafa;
+  color: black;
+  border: 1px solid black;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
