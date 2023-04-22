@@ -52,6 +52,7 @@ function startCountdown(endDate) {
       hoursElement.textContent = '00';
       minutesElement.textContent = '00';
       secondsElement.textContent = '00';
+      window.alert('Countdown ended!');
     } else {
       // W przeciwnym razie, wyświetlaj czas w formacie dn., godz., sec., na podstawie pozostałego czasu.
       daysElement.textContent = formatTime(timeRemaining.days);
