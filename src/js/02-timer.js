@@ -11,7 +11,7 @@ const daysElement = document.querySelector('[data-days]');
 const hoursElement = document.querySelector('[data-hours]');
 const minutesElement = document.querySelector('[data-minutes]');
 const secondsElement = document.querySelector('[data-seconds]');
-//// Zmienna przechowująca identyfikator interwału odliczania
+//// Zmienna przechowująca identyfikator interwału który jest używany do zakończenia odliczania.
 let countdownIntervalId;
 //konfiguracja flatpicr
 const options = {
@@ -26,11 +26,12 @@ const options = {
     // Sprawdzenie czy wybrana data jest w przyszłości
     if (selectedDate <= now) {
       window.alert('Wybierz datę w przyszłości!');
-      startButton.disabled = true;
+      startButton.disabled = true; // Zablokowanie przycisku uruchamiającego odliczanie
     } else {
-      startButton.disabled = false;
+      startButton.disabled = false; // Odblokowanie przycisku uruchamiającego odliczanie
+      //uruchomienie odliczania po kliknięciu na przycisk
       startButton.addEventListener('click', () => {
-        startCountdown(selectedDate);
+        startCountdown(selectedDate); //rozpoczynanie odliczania
       });
     }
   },
@@ -38,27 +39,30 @@ const options = {
 //Inicjalizacja flatpickr
 flatpickr(datetimePicker, options);
 
-//odliczanie czasu
+//rozpoczęcie odliczania i aktualizowanie wyświetlanej wartości czasu co sekundę.
 function startCountdown(endDate) {
-  clearInterval(countdownIntervalId);
-  //nowy interwał odliczania czasu
+  clearInterval(countdownIntervalId); // W przypadku, gdy funkcja `startCountdown` została wywołana ponownie, wyczyścić poprzedni interwał
   countdownIntervalId = setInterval(() => {
-    const timeRemaining = convertMs(endDate - new Date());
-    if (timeRemaining < 0) {
+    //uruchamianie funkcji przekazanej jako drugi argument co 1000ms (1s).
+    const timeRemaining = convertMs(endDate - new Date()); // Obliczenie czasu, który pozostał między obecną datą, a datą końcową przekazaną jako argument funkcji.
+    if (timeRemaining.days < 0) {
+      // Jeśli odliczanie powinno się zakończyć, ponieważ wybrana data końcowa jest wcześniejsza niż obecna data, wyzeruj wyświetlanie czasu.
       clearInterval(countdownIntervalId);
       daysElement.textContent = '00';
       hoursElement.textContent = '00';
       minutesElement.textContent = '00';
       secondsElement.textContent = '00';
     } else {
-      daysElement.textContent = timeRemaining.days;
-      hoursElement.textContent = timeRemaining.hours;
-      minutesElement.textContent = timeRemaining.minutes;
-      secondsElement.textContent = timeRemaining.seconds;
+      // W przeciwnym razie, wyświetlaj czas w formacie dn., godz., sec., na podstawie pozostałego czasu.
+      daysElement.textContent = formatTime(timeRemaining.days);
+      hoursElement.textContent = formatTime(timeRemaining.hours % 24);
+      minutesElement.textContent = formatTime(timeRemaining.minutes % 60);
+      secondsElement.textContent = formatTime(timeRemaining.seconds % 60);
     }
-  }, 1000);
+  }, 1000); // Określenie granularności (1000ms = 1s), co oznacza, że funkcja przekazana jako drugi argument będzie wykonywana co 1 sekundę.
 }
-//Funkcja konwertująca milisekundy na obiekt z pozostałym czasem
+
+//Funkcja konwertująca milisekundy na obiekt z pozostałym czasem w formacie dni, godziny, min., sec.
 function convertMs(milliseconds) {
   const seconds = Math.floor(milliseconds / 1000);
   const minutes = Math.floor(seconds / 60);
